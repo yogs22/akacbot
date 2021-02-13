@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Majors;
 use App\Http\Livewire\Lessons;
+use App\Http\Livewire\ScoreCategories;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +23,5 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
     Route::get('major', Majors::class)->name('major');
     Route::get('lesson', Lessons::class)->name('lesson');
+    Route::get('score_category', ScoreCategories::class)->name('score_category');
 });

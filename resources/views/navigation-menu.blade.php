@@ -39,6 +39,9 @@
                                     <x-jet-dropdown-link href="{{ route('lesson') }}">
                                         {{ __('Mata Pelajaran') }}
                                     </x-jet-dropdown-link>
+                                    <x-jet-dropdown-link href="{{ route('score_category') }}">
+                                        {{ __('Kategori Nilai') }}
+                                    </x-jet-dropdown-link>
                                 </x-slot>
                             </x-jet-dropdown>
                         </div>
