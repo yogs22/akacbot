@@ -3,17 +3,17 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Models\Major;
+use App\Models\Lesson;
 
-class Majors extends Component
+class Lessons extends Component
 {
-    public $majors, $name, $code, $major_id;
+    public $lessons, $name, $code, $lesson_id;
     public $isModal = 0;
 
     public function render()
     {
-        $this->majors = Major::orderBy('created_at', 'DESC')->get();
-        return view('livewire.majors.index');
+        $this->lessons = Lesson::orderBy('created_at', 'DESC')->get();
+        return view('livewire.lessons.index');
     }
 
     public function create()
@@ -37,7 +37,7 @@ class Majors extends Component
     {
         $this->name = '';
         $this->code = '';
-        $this->major_id = '';
+        $this->lesson_id = '';
     }
 
     public function store()
@@ -47,31 +47,31 @@ class Majors extends Component
             'code' => 'required|string',
         ]);
 
-        Major::updateOrCreate(['id' => $this->major_id], [
+        Lesson::updateOrCreate(['id' => $this->lesson_id], [
             'name' => $this->name,
             'code' => $this->code,
         ]);
 
-        session()->flash('message', $this->major_id ? $this->name . ' Diperbaharui': $this->name . ' Ditambahkan');
+        session()->flash('message', $this->lesson_id ? $this->name . ' Diperbaharui': $this->name . ' Ditambahkan');
         $this->closeModal();
         $this->resetFields();
     }
 
     public function edit($id)
     {
-        $major = Major::find($id);
+        $lesson = Lesson::find($id);
 
-        $this->major_id = $id;
-        $this->name = $major->name;
-        $this->code = $major->code;
+        $this->lesson_id = $id;
+        $this->name = $lesson->name;
+        $this->code = $lesson->code;
 
         $this->openModal();
     }
 
     public function delete($id)
     {
-        $major = Major::find($id);
-        $major->delete();
-        session()->flash('message', $major->name . ' Dihapus');
+        $lesson = Lesson::find($id);
+        $lesson->delete();
+        session()->flash('message', $lesson->name . ' Dihapus');
     }
 }

@@ -36,6 +36,9 @@
                                     <x-jet-dropdown-link href="{{ route('major') }}">
                                         {{ __('Jurusan') }}
                                     </x-jet-dropdown-link>
+                                    <x-jet-dropdown-link href="{{ route('lesson') }}">
+                                        {{ __('Mata Pelajaran') }}
+                                    </x-jet-dropdown-link>
                                 </x-slot>
                             </x-jet-dropdown>
                         </div>
