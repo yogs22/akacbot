@@ -4,7 +4,6 @@
     </h2>
 </x-slot>
 <div class="py-12">
-    @include('livewire.loading')
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
             @if (session()->has('message'))
@@ -22,6 +21,8 @@
             @if($isModal)
                 @include('livewire.lessons.create')
             @endif
+
+            @include('livewire.loading')
 
             <table class="table-fixed w-full">
                 <thead>
