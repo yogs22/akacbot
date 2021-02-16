@@ -52,3 +52,19 @@
     transform: scale(1.0);
   }
 }
+
+.svg-icon {
+  width: 0.5em;
+  height: 0.5em;
+}
+
+.svg-icon path,
+.svg-icon polygon,
+.svg-icon rect {
+  fill: #fff;
+}
+
+.svg-icon circle {
+  stroke: #fff;
+  stroke-width: 1;
+}
