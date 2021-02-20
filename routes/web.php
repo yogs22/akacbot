@@ -7,6 +7,7 @@ use App\Http\Livewire\ScoreCategories;
 use App\Http\Livewire\Teachers;
 use App\Http\Livewire\Classes;
 use App\Http\Livewire\Parents;
+use App\Http\Livewire\Students;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,4 +31,5 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
     Route::get('teacher', Teachers::class)->name('teacher');
     Route::get('class', Classes::class)->name('class');
     Route::get('religion', Parents::class)->name('religion');
+    Route::get('student', Students::class)->name('student');
 });

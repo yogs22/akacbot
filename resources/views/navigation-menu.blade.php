@@ -36,8 +36,11 @@
                                     <x-jet-dropdown-link href="{{ route('teacher') }}">
                                         {{ __('Guru') }}
                                     </x-jet-dropdown-link>
+                                    <x-jet-dropdown-link href="{{ route('student') }}">
+                                        {{ __('Siswa') }}
+                                    </x-jet-dropdown-link>
                                     <x-jet-dropdown-link href="{{ route('religion') }}">
-                                        {{ __('Orang Tua') }}
+                                        {{ __('Wali Murid') }}
                                     </x-jet-dropdown-link>
                                     <x-jet-dropdown-link href="{{ route('class') }}">
                                         {{ __('Kelas') }}
