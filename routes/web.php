@@ -8,6 +8,7 @@ use App\Http\Livewire\Teachers;
 use App\Http\Livewire\Classes;
 use App\Http\Livewire\Parents;
 use App\Http\Livewire\Students;
+use App\Http\Livewire\StudentDetail;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,5 +32,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
     Route::get('teacher', Teachers::class)->name('teacher');
     Route::get('class', Classes::class)->name('class');
     Route::get('religion', Parents::class)->name('religion');
+
+    // Student route
+    Route::get('student/{student}', StudentDetail::class)->name('student.detail');
     Route::get('student', Students::class)->name('student');
 });

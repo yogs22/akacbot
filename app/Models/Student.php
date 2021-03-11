@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Student extends Model
 {
@@ -18,5 +19,15 @@ class Student extends Model
     public function parent()
     {
         return $this->belongsTo(StudentParent::class);
+    }
+
+    public function scores()
+    {
+        return $this->hasMany(Score::class);
+    }
+
+    public function getFullBirthAttribute()
+    {
+        return $this->birthplace .'/'. Carbon::parse($this->birthdate)->format('d M Y');
     }
 }

@@ -7,19 +7,23 @@ use App\Models\Student;
 use App\Models\StudentParent;
 use App\Models\Major;
 
-class Students extends Component
+class StudentDetail extends Component
 {
-    public $students, $student, $name, $nisn, $address, $birthplace, $birthdate, $phone_number, $gender, $religion, $parent_id, $major_id, $student_id;
+    public $student, $name, $nisn, $address, $birthplace, $birthdate, $phone_number, $gender, $religion, $parent_id, $major_id, $student_id;
 
     public $isModal = 0;
 
     public $parents = null;
     public $majors = null;
 
+    public function mount(Student $student)
+    {
+        $this->student = $student;
+    }
+
     public function render()
     {
-        $this->students = Student::with(['major', 'parent'])->orderBy('created_at', 'DESC')->get();
-        return view('livewire.students.index');
+        return view('livewire.student_details.index');
     }
 
     public function create()
