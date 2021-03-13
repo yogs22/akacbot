@@ -81,6 +81,16 @@
                         </select>
                         @error('major_id') <span class="text-red-500">{{ $message }}</span>@enderror
                     </div>
+                    <div class="mb-4">
+                        <label for="formParent" class="block text-gray-700 text-sm font-bold mb-2">Kelas:</label>
+                        <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="formParent" wire:model="class_id">
+                            <option value=""></option>
+                            @foreach ($classes as $class)
+                                <option value="{{ $class->id }}">{{ $class->name }} - {{ $class->sub }}</option>
+                            @endforeach
+                        </select>
+                        @error('class_id') <span class="text-red-500">{{ $message }}</span>@enderror
+                    </div>
                 </div>
 
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">

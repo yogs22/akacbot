@@ -11,5 +11,5 @@ class Grade extends Model
 
     protected $table = 'classes';
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'sub'];
 }

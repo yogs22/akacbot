@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class Student extends Model
 {
     protected $fillable = [
-        'nisn', 'name', 'gender', 'address', 'birthplace', 'birthdate', 'phone_number', 'religion', 'parent_id', 'major_id'
+        'nisn', 'name', 'gender', 'address', 'birthplace', 'birthdate', 'phone_number', 'religion', 'parent_id', 'major_id', 'class_id'
     ];
 
     public function major()
@@ -21,6 +21,11 @@ class Student extends Model
         return $this->belongsTo(StudentParent::class);
     }
 
+    public function grade()
+    {
+        return $this->belongsTo(Grade::class, 'class_id');
+    }
+
     public function scores()
     {
         return $this->hasMany(Score::class);
@@ -28,6 +33,13 @@ class Student extends Model
 
     public function getFullBirthAttribute()
     {
-        return $this->birthplace .'/'. Carbon::parse($this->birthdate)->format('d M Y');
+        $birthDate = Carbon::parse($this->birthdate)->format('d M Y');
+
+        return "{$this->birthplace} / {$birthDate}";
+    }
+
+    public function getFullGradeAttribute()
+    {
+        return "{$this->grade->name} {$this->major->name} {$this->grade->sub}";
     }
 }

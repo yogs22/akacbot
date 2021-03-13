@@ -20,9 +20,9 @@ class CreateTeacherLessonTable extends Migration
             $table->unsignedBigInteger('class_id');
             $table->timestamps();
 
-            $table->foreign('teacher_id')->references('id')->on('teachers')->onUpdate('cascade');
-            $table->foreign('lesson_id')->references('id')->on('lessons')->onUpdate('cascade');
-            $table->foreign('class_id')->references('id')->on('classes')->onUpdate('cascade');
+            $table->foreign('teacher_id')->references('id')->on('teachers')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('lesson_id')->references('id')->on('lessons')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('class_id')->references('id')->on('classes')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

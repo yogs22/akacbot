@@ -6,15 +6,17 @@ use Livewire\Component;
 use App\Models\Student;
 use App\Models\StudentParent;
 use App\Models\Major;
+use App\Models\Grade;
 
 class Students extends Component
 {
-    public $students, $student, $name, $nisn, $address, $birthplace, $birthdate, $phone_number, $gender, $religion, $parent_id, $major_id, $student_id;
+    public $students, $student, $name, $nisn, $address, $birthplace, $birthdate, $phone_number, $gender, $religion, $parent_id, $major_id, $student_id, $class_id;
 
     public $isModal = 0;
 
     public $parents = null;
     public $majors = null;
+    public $classes = null;
 
     public function render()
     {
@@ -39,12 +41,18 @@ class Students extends Component
         $this->isModal = true;
 
         $this->getStudentParents();
+        $this->getGrades();
         $this->getMajors();
     }
 
     public function getStudentParents()
     {
         $this->parents = StudentParent::all();
+    }
+
+    public function getGrades()
+    {
+        $this->classes = Grade::all();
     }
 
     public function getMajors()
@@ -65,6 +73,7 @@ class Students extends Component
         $this->parent_id = '';
         $this->major_id = '';
         $this->student_id = '';
+        $this->class_id = '';
     }
 
     public function store()
@@ -80,6 +89,7 @@ class Students extends Component
             'major_id' => 'required|integer',
             'parent_id' => 'required|integer',
             'gender' => 'required|string',
+            'class_id' => 'required|string',
         ]);
 
         Student::updateOrCreate(['id' => $this->student_id], [
@@ -93,6 +103,7 @@ class Students extends Component
             'religion' => $this->religion,
             'parent_id' => $this->parent_id,
             'major_id' => $this->major_id,
+            'class_id' => $this->class_id,
         ]);
 
         session()->flash('message', $this->student_id ? $this->name . ' Diperbaharui': $this->name . ' Ditambahkan');
@@ -122,6 +133,7 @@ class Students extends Component
         $this->religion = $student->religion;
         $this->parent_id = $student->parent_id;
         $this->major_id = $student->major_id;
+        $this->class_id = $student->class_id;
 
         $this->openModal();
     }

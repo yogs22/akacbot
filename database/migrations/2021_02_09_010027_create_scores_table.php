@@ -22,9 +22,9 @@ class CreateScoresTable extends Migration
             $table->unsignedBigInteger('score_category_id');
             $table->timestamps();
 
-            $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade');
-            $table->foreign('lesson_id')->references('id')->on('lessons')->onUpdate('cascade');
-            $table->foreign('score_category_id')->references('id')->on('score_categories')->onUpdate('cascade');
+            $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('lesson_id')->references('id')->on('lessons')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('score_category_id')->references('id')->on('score_categories')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
