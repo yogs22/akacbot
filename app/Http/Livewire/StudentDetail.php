@@ -4,25 +4,29 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Student;
-use App\Models\StudentParent;
-use App\Models\Major;
+use App\Models\ScoreCategory;
+use App\Models\Lesson;
+use App\Models\Score;
 
 class StudentDetail extends Component
 {
-    public $student, $name, $nisn, $address, $birthplace, $birthdate, $phone_number, $gender, $religion, $parent_id, $major_id, $student_id;
+    public $student, $scores, $score_id, $student_id, $lesson_id, $value, $semester, $score_category_id;
 
     public $isModal = 0;
 
-    public $parents = null;
-    public $majors = null;
+    public $score_categories = null;
+    public $lessons = null;
 
     public function mount(Student $student)
     {
         $this->student = $student;
+        $this->student_id = $student->id;
     }
 
     public function render()
     {
+        $this->scores = Score::where('student_id', $this->student_id)->select('*')->orderBy('semester')->get();
+
         return view('livewire.student_details.index');
     }
 
@@ -42,98 +46,69 @@ class StudentDetail extends Component
     {
         $this->isModal = true;
 
-        $this->getStudentParents();
-        $this->getMajors();
+        $this->getScoreCategories();
+        $this->getLessons();
     }
 
-    public function getStudentParents()
+    public function getScoreCategories()
     {
-        $this->parents = StudentParent::all();
+        $this->score_categories = ScoreCategory::all();
     }
 
-    public function getMajors()
+    public function getLessons()
     {
-        $this->majors = Major::all();
+        $this->lessons = Lesson::all();
     }
 
     public function resetFields()
     {
-        $this->nisn = '';
-        $this->name = '';
-        $this->address = '';
-        $this->phone_number = '';
-        $this->birthplace = '';
-        $this->birthdate = '';
-        $this->gender = '';
-        $this->religion = '';
-        $this->parent_id = '';
-        $this->major_id = '';
-        $this->student_id = '';
+        $this->score_id = '';
+        $this->lesson_id = '';
+        $this->value = '';
+        $this->semester = '';
+        $this->score_category_id = '';
     }
 
     public function store()
     {
         $this->validate([
-            'name' => 'required|string',
-            'nisn' => 'required|string',
-            'address' => 'required|string',
-            'phone_number' => 'required|string',
-            'birthplace' => 'required|string',
-            'birthdate' => 'required|date',
-            'religion' => 'required|string',
-            'major_id' => 'required|integer',
-            'parent_id' => 'required|integer',
-            'gender' => 'required|string',
+            'lesson_id' => 'required',
+            'value' => 'required',
+            'semester' => 'required',
+            'score_category_id' => 'required',
         ]);
 
-        Student::updateOrCreate(['id' => $this->student_id], [
-            'name' => $this->name,
-            'nisn' => $this->nisn,
-            'address' => $this->address,
-            'phone_number' => $this->phone_number,
-            'gender' => $this->gender,
-            'birthplace' => $this->birthplace,
-            'birthdate' => $this->birthdate,
-            'religion' => $this->religion,
-            'parent_id' => $this->parent_id,
-            'major_id' => $this->major_id,
+        Score::updateOrCreate(['id' => $this->score_id], [
+            'student_id' => $this->student_id,
+            'lesson_id' => $this->lesson_id,
+            'value' => $this->value,
+            'semester' => $this->semester,
+            'score_category_id' => $this->score_category_id,
         ]);
 
-        session()->flash('message', $this->student_id ? $this->name . ' Diperbaharui': $this->name . ' Ditambahkan');
+        session()->flash('message', $this->score_id ? 'Nilai Diperbaharui': 'Nilai Ditambahkan');
         $this->closeModal();
         $this->resetFields();
     }
 
-    public function show($id)
-    {
-        $student = Student::find($id);
-
-        return view('livewire.students.show', compact('student'));
-    }
-
     public function edit($id)
     {
-        $student = Student::find($id);
+        $student = Score::find($id);
 
-        $this->student_id = $id;
-        $this->nisn = $student->nisn;
-        $this->name = $student->name;
-        $this->address = $student->address;
-        $this->phone_number = $student->phone_number;
-        $this->birthplace = $student->birthplace;
-        $this->birthdate = $student->birthdate;
-        $this->gender = $student->gender;
-        $this->religion = $student->religion;
-        $this->parent_id = $student->parent_id;
-        $this->major_id = $student->major_id;
+        $this->score_id = $id;
+        $this->student_id = $student->student_id;
+        $this->lesson_id = $student->lesson_id;
+        $this->value = $student->value;
+        $this->semester = $student->semester;
+        $this->score_category_id = $student->score_category_id;
 
         $this->openModal();
     }
 
     public function delete($id)
     {
-        $student = Student::find($id);
+        $student = Score::find($id);
         $student->delete();
-        session()->flash('message', $student->name . ' Dihapus');
+        session()->flash('message', 'Nilai Dihapus');
     }
 }
