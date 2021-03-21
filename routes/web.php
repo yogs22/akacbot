@@ -9,6 +9,7 @@ use App\Http\Livewire\Classes;
 use App\Http\Livewire\Parents;
 use App\Http\Livewire\Students;
 use App\Http\Livewire\StudentDetail;
+use App\Http\Livewire\Chatbot;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,4 +37,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
     // Student route
     Route::get('student/{student}', StudentDetail::class)->name('student.detail');
     Route::get('student', Students::class)->name('student');
+
+    // Chatbot
+    Route::get('chatbot', Chatbot::class)->name('chatbot');
 });

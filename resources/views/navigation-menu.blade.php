@@ -16,8 +16,12 @@
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
 
-                    <div class="hidden sm:flex sm:items-center sm:ml-6">
-                        <!-- Settings Dropdown -->
+                    @if (request()->routeIs('dashboard') || request()->routeIs('chatbot'))
+                        <div class="hidden sm:flex sm:items-center sm:ml-6">
+                    @else
+                        <div class="hidden sm:flex sm:items-center sm:ml-6 inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out">
+                    @endif
+                        <!-- Master Dropdown -->
                         <div class="ml-3 relative">
                             <x-jet-dropdown align="right" width="48">
                                 <x-slot name="trigger">
@@ -59,7 +63,7 @@
                         </div>
                     </div>
 
-                    <x-jet-nav-link href="{{ route('dashboard') }}">
+                    <x-jet-nav-link href="{{ route('chatbot') }}" :active="request()->routeIs('chatbot')">
                         {{ __('Chatbot') }}
                     </x-jet-nav-link>
                 </div>
