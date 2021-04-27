@@ -41,3 +41,4 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
     // Chatbot
     Route::get('chatbot', Chatbot::class)->name('chatbot');
 });
+Route::post('chatbot', [Chatbot::class, 'store'])->name('chatbot.store');

@@ -38,8 +38,13 @@ class Student extends Model
         return "{$this->birthplace} / {$birthDate}";
     }
 
+    public function getDateFormatedAttribute()
+    {
+        return Carbon::parse($this->birthdate)->format('d M Y');
+    }
+
     public function getFullGradeAttribute()
     {
-        return "{$this->grade->name} {$this->major->name} {$this->grade->sub}";
+        return "{$this->grade->name} {$this->major->code} {$this->grade->sub}";
     }
 }
