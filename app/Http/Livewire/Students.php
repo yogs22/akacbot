@@ -89,7 +89,7 @@ class Students extends Component
             'major_id' => 'required|integer',
             'parent_id' => 'required|integer',
             'gender' => 'required|string',
-            'class_id' => 'required|string',
+            'class_id' => 'required|integer',
         ]);
 
         Student::updateOrCreate(['id' => $this->student_id], [

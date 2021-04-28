@@ -33,8 +33,8 @@
                         <label for="formGender" class="block text-gray-700 text-sm font-bold mb-2">JK:</label>
                         <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="formGender" wire:model="gender">
                             <option value=""></option>
-                            <option value="laki-laki">Laki-Laki</option>
-                            <option value="perempuan">Perempuan</option>
+                            <option value="Laki-laki">Laki-Laki</option>
+                            <option value="Perempuan">Perempuan</option>
                         </select>
                         @error('gender') <span class="text-red-500">{{ $message }}</span>@enderror
                     </div>

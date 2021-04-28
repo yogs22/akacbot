@@ -26,9 +26,8 @@
                                             'bg-gray-100': message.user == 'operator',
                                             'text-gray-700': message.user == 'operator',
                                             'bg-indigo-500': message.user == 'bot',
-                                            'text-gray-50': message.user == 'bot' }" style="max-width: 300px;">
+                                            'text-gray-50': message.user == 'bot' }" style="max-width: 400px;">
                                             <span class="block" v-html="message.text"></span>
-                                            <!-- <span class="block text-xs text-left">10:32pm</span> -->
                                         </div>
                                     </div>
                                 </template>
@@ -64,7 +63,16 @@ export default {
         }
     },
     mounted() {
-        let text = 'Selamat datang di Akcbot';
+        let text = `
+            <b>Selamat datang di Akcbot</b> <br>
+            <b>Silahkan pilih pertanyaan di bawah ya:</b> <br>
+            1. Data siswa dengan NISN / Nama ? <br>
+            2. Data wali siswa dengan NISN / Nama ? <br>
+            3. Nilai pelajaran dengan NISN / Nama ? <br>
+            4. Data guru mapel dengan kelas Nama ? <br>
+            5. Data pelajaran siswa dengan NISN / Nama ? <br>
+        `;
+
         this._addMessage(text);
     },
     methods: {
@@ -99,6 +107,8 @@ export default {
                'original': original,
                'attachment': attachment || {},
            });
+
+           this.scrollBottom();
        },
 
        sendMessage() {
@@ -110,6 +120,13 @@ export default {
             }
             this._addMessage(messageText, null, true);
             this.callAPI(messageText);
+        },
+
+        scrollBottom() {
+            window.setInterval(function() {
+                var elem = document.getElementById('chat');
+                elem.scrollTop = elem.scrollHeight;
+            }, 100);
         }
     }
 }

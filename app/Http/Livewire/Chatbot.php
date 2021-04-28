@@ -19,34 +19,54 @@ class Chatbot extends Component
         try {
             $botman  = app('botman');
 
-            $botman->hears('Data siswa dengan NISN {nisn}', function($bot, $nisn) {
-                $student = Student::where('nisn', $nisn)->first();
+            $this->getStudent($botman);
 
-                if (empty($student)) {
-                    $bot->reply('Data siswa yang anda maksud tidak ditemukan');
-                } else {
-                    $bot->reply("
-                        Nama: {$student->name} <br>
-                        NISN: {$student->nisn} <br>
-                        Jenis Kelamin: {$student->gender} <br>
-                        Jurusan: {$student->major->name} <br>
-                        Kelas: {$student->full_grade} <br>
-                        Tempat Lahir: {$student->birthplace} <br>
-                        Tanggal Lahir: {$student->date_formated} <br>
-                        No HP: {$student->phone_number} <br>
-                        Agama: {$student->religion}
-                    ");
-                }
-            });
-
-            $botman->fallback(function($bot) {
-                $bot->reply('Sorry, I did not understand these commands. Here is a list of commands I understand: ...');
-            });
+            $this->fallback($botman);
 
             $botman->listen();
         } catch (\Exception $e) {
             return $e;
         }
+    }
 
+    /**
+     * Fallback message when message not found
+     * @param  Object $botman
+     * @return BotMan $botman
+     */
+    public function fallback($botman)
+    {
+        $botman->fallback(function($bot) {
+            $bot->reply('Mohon maaf, pertanyaan tidak tersedia');
+        });
+    }
+
+    /**
+     * Get student data with NIM / name
+     * @return BotMan $botman
+     */
+    public function getStudent($botman)
+    {
+        $botman->hears('Data siswa dengan (nisn|nama) {object}', function($bot, $object) {
+            $student = Student::with('major')->where('name', 'like', "%{$object}%")
+                ->orWhere('nisn', $object)
+                ->first();
+
+            if (empty($student)) {
+                $bot->reply('Data siswa yang anda maksud tidak ditemukan');
+            } else {
+                $bot->reply("
+                    Nama: {$student->name} <br>
+                    NISN: {$student->nisn} <br>
+                    Jenis Kelamin: {$student->gender} <br>
+                    Jurusan: {$student->major->name} <br>
+                    Kelas: {$student->full_grade} <br>
+                    Tempat Lahir: {$student->birthplace} <br>
+                    Tanggal Lahir: {$student->date_formated} <br>
+                    No HP: {$student->phone_number} <br>
+                    Agama: {$student->religion}
+                ");
+            }
+        });
     }
 }
