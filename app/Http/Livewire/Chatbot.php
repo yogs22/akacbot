@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use BotMan\BotMan\BotMan;
 use Livewire\Component;
 use BotMan\BotMan\Messages\Incoming\Answer;
+use App\Models\Score;
 use App\Models\Student;
 use App\Models\StudentParent;
 use Illuminate\View\View;
@@ -32,6 +33,7 @@ class Chatbot extends Component
 
             $this->getStudent($botman);
             $this->getParent($botman);
+            $this->getScore($botman);
 
             $this->fallback($botman);
 
@@ -39,18 +41,6 @@ class Chatbot extends Component
         } catch (\Exception $e) {
             return response()->json($e->getMessage());
         }
-    }
-
-    /**
-     * Fallback message when message not found
-     * @param  Object $botman
-     * @return BotMan $botman
-     */
-    public function fallback($botman)
-    {
-        $botman->fallback(function($bot) {
-            $bot->reply('Mohon maaf, pertanyaan tidak tersedia');
-        });
     }
 
     /**
@@ -82,6 +72,11 @@ class Chatbot extends Component
         });
     }
 
+    /**
+     * Get student parent with nim/nisn
+     * @param  BotMan $botman
+     * @return BotMan $botman
+     */
     public function getParent($botman)
     {
         $botman->hears('Data wali siswa dengan (nisn|nama) {object}', function($bot, $object) {
@@ -104,6 +99,51 @@ class Chatbot extends Component
                     ");
                 }
             }
+        });
+    }
+
+    /**
+     * Get student score with nim/nisn
+     * @param  BotMan $botman
+     * @return BotMan $botman
+     */
+    public function getScore($botman)
+    {
+        $botman->hears('Nilai pelajaran {adjective} dengan nisn {nisn}', function($bot, $adjective, $nisn) {
+            $scores = Score::select('semester', 'value', 'score_category_id')->with('scoreCategory:id,name')
+            ->whereHas('lesson', function (Builder $query) use ($adjective) {
+                $query->where('name', $adjective);
+            })
+            ->whereHas('student', function (Builder $query) use ($nisn) {
+                $query->where('nisn', $nisn);
+            })
+            ->get();
+
+            if (count($scores) == 0) {
+                $bot->reply('Data nilai yang anda maksud tidak ditemukan');
+            } else {
+                $scoreGrouped = $scores->groupBy('semester');
+                foreach ($scoreGrouped->toArray() as $score) {
+                    $semester = "Nilai semester {$score[0]['semester']} : <br>";
+                    $value = null;
+                    foreach ($score as $sc) {
+                        $value .= $sc['score_category']['name'] .' : '. $sc['value'] . '<br>';
+                    }
+                    $bot->reply($semester.$value);
+                }
+            }
+        });
+    }
+
+    /**
+     * Fallback message when message not found
+     * @param  Object $botman
+     * @return BotMan $botman
+     */
+    public function fallback($botman)
+    {
+        $botman->fallback(function($bot) {
+            $bot->reply('Mohon maaf, pertanyaan tidak tersedia');
         });
     }
 }

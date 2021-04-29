@@ -68,7 +68,7 @@ export default {
             <b>Silahkan pilih pertanyaan di bawah ya:</b> <br>
             1. Data siswa dengan NISN / Nama ? <br>
             2. Data wali siswa dengan NISN / Nama ? <br>
-            3. Nilai pelajaran dengan NISN / Nama ? <br>
+            3. Nilai pelajaran ? dengan NISN ? <br>
             4. Data guru mapel dengan kelas Nama ? <br>
             5. Data pelajaran siswa dengan NISN / Nama ? <br>
         `;
