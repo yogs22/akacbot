@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Database\Eloquent\Builder;
 use BotMan\BotMan\BotMan;
 use Livewire\Component;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use App\Models\Student;
+use App\Models\StudentParent;
 use Illuminate\View\View;
 
 class Chatbot extends Component
@@ -83,24 +85,24 @@ class Chatbot extends Component
     public function getParent($botman)
     {
         $botman->hears('Data wali siswa dengan (nisn|nama) {object}', function($bot, $object) {
-            $student = Student::with('major')->where('name', 'like', "%{$object}%")
-                ->orWhere('nisn', $object)
-                ->first();
+            $parents = StudentParent::with('student')->whereHas('student', function (Builder $query) use ($object) {
+                $query->where('name', 'like', "%{$object}%")->orWhere('nisn', $object);
+            })
+            ->get();
 
-            if (empty($student)) {
-                $bot->reply('Data siswa yang anda maksud tidak ditemukan');
+            if (count($parents) == 0) {
+                $bot->reply('Data wali murid yang anda maksud tidak ditemukan');
             } else {
-                $bot->reply("
-                    Nama: {$student->name} <br>
-                    NISN: {$student->nisn} <br>
-                    Jenis Kelamin: {$student->gender} <br>
-                    Jurusan: {$student->major->name} <br>
-                    Kelas: {$student->full_grade} <br>
-                    Tempat Lahir: {$student->birthplace} <br>
-                    Tanggal Lahir: {$student->date_formated} <br>
-                    No HP: {$student->phone_number} <br>
-                    Agama: {$student->religion}
-                ");
+                foreach ($parents as $parent) {
+                    $bot->reply("
+                        Nama: {$parent->name} <br>
+                        Alamat: {$parent->address} <br>
+                        Tanggal Lahir: {$parent->date_formated} <br>
+                        No HP: {$parent->phone_number} <br>
+                        Agama: {$parent->religion} <br>
+                        Status: {$parent->relation}
+                    ");
+                }
             }
         });
     }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class StudentParent extends Model
 {
@@ -16,6 +17,11 @@ class StudentParent extends Model
 
     public function student()
     {
-        $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class);
+    }
+
+    public function getDateFormatedAttribute()
+    {
+        return Carbon::parse($this->birthdate)->format('d M Y');
     }
 }
