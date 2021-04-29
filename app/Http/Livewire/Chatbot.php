@@ -34,6 +34,7 @@ class Chatbot extends Component
             $this->getStudent($botman);
             $this->getParent($botman);
             $this->getScore($botman);
+            $this->getLesson($botman);
 
             $this->fallback($botman);
 
@@ -131,6 +132,33 @@ class Chatbot extends Component
                     }
                     $bot->reply($semester.$value);
                 }
+            }
+        });
+    }
+
+    /**
+     * Get lesson list of student
+     * @param  BotMan $botman
+     * @return BotMan $botman
+     */
+    public function getLesson($botman)
+    {
+        $botman->hears('Data pelajaran siswa dengan (nisn|nama) {object}', function($bot, $object) {
+            $scores = Score::with('lesson', 'student')->whereHas('student', function (Builder $query) use ($object) {
+                $query->where('name', 'like', "%{$object}%")->orWhere('nisn', $object);
+            })
+            ->groupBy('lesson_id')
+            ->get();
+
+            if (count($scores) == 0) {
+                $bot->reply('Data pelajaran siswa yang anda maksud tidak ditemukan');
+            } else {
+                $value = null;
+                foreach ($scores as $key => $score) {
+                    $value .= "Mata pelajaran ".++$key." : {$score->lesson->name} <br>";
+                }
+
+                $bot->reply($value);
             }
         });
     }
