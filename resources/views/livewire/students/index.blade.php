@@ -32,7 +32,6 @@
                         <th class="px-4 py-2">JK</th>
                         <th class="px-4 py-2">No HP</th>
                         <th class="px-4 py-2">Agama</th>
-                        <th class="px-4 py-2">Wali Murid</th>
                         <th class="px-4 py-2">Jurusan</th>
                         <th class="px-4 py-2" width="180">Aksi</th>
                     </tr>
@@ -45,7 +44,6 @@
                             <td class="border px-4 py-2">{{ $row->gender }}</td>
                             <td class="border px-4 py-2">{{ $row->phone_number }}</td>
                             <td class="border px-4 py-2">{{ $row->religion }}</td>
-                            <td class="border px-4 py-2">{{ $row->parent->name }}</td>
                             <td class="border px-4 py-2">{{ $row->major->code }}</td>
                             <td class="border px-4 py-2">
                                 <button wire:click="edit({{ $row->id }})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded" title="Edit">
@@ -76,6 +74,9 @@
                     @endforelse
                 </tbody>
             </table>
+            <div class="mt-5">
+                {{ $students->links() }}
+            </div>
         </div>
     </div>
 </div>

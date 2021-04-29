@@ -10,18 +10,18 @@ use App\Models\Grade;
 
 class Students extends Component
 {
-    public $students, $student, $name, $nisn, $address, $birthplace, $birthdate, $phone_number, $gender, $religion, $parent_id, $major_id, $student_id, $class_id;
+    public $student, $name, $nisn, $address, $birthplace, $birthdate, $phone_number, $gender, $religion, $major_id, $student_id, $class_id;
 
     public $isModal = 0;
 
-    public $parents = null;
     public $majors = null;
     public $classes = null;
 
     public function render()
     {
-        $this->students = Student::with(['major', 'parent'])->orderBy('created_at', 'DESC')->get();
-        return view('livewire.students.index');
+        return view('livewire.students.index', [
+            'students' => Student::with(['major'])->latest()->paginate(15)
+        ]);
     }
 
     public function create()
@@ -40,14 +40,8 @@ class Students extends Component
     {
         $this->isModal = true;
 
-        $this->getStudentParents();
         $this->getGrades();
         $this->getMajors();
-    }
-
-    public function getStudentParents()
-    {
-        $this->parents = StudentParent::all();
     }
 
     public function getGrades()
@@ -70,7 +64,6 @@ class Students extends Component
         $this->birthdate = '';
         $this->gender = '';
         $this->religion = '';
-        $this->parent_id = '';
         $this->major_id = '';
         $this->student_id = '';
         $this->class_id = '';
@@ -87,7 +80,6 @@ class Students extends Component
             'birthdate' => 'required|date',
             'religion' => 'required|string',
             'major_id' => 'required|integer',
-            'parent_id' => 'required|integer',
             'gender' => 'required|string',
             'class_id' => 'required|integer',
         ]);
@@ -101,7 +93,6 @@ class Students extends Component
             'birthplace' => $this->birthplace,
             'birthdate' => $this->birthdate,
             'religion' => $this->religion,
-            'parent_id' => $this->parent_id,
             'major_id' => $this->major_id,
             'class_id' => $this->class_id,
         ]);
@@ -131,7 +122,6 @@ class Students extends Component
         $this->birthdate = $student->birthdate;
         $this->gender = $student->gender;
         $this->religion = $student->religion;
-        $this->parent_id = $student->parent_id;
         $this->major_id = $student->major_id;
         $this->class_id = $student->class_id;
 

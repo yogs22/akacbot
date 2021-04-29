@@ -59,14 +59,20 @@
                     <td class="px-4 py-2">{{ $student->religion }}</td>
                 </tr>
                 <tr>
-                    <td class="px-4 py-2 font-bold">Wali Murid</td>
-                    <td class="px-4 py-2" width="10">:</td>
-                    <td class="px-4 py-2">{{ $student->parent->name }}</td>
-                </tr>
-                <tr>
                     <td class="px-4 py-2 font-bold">Kelas</td>
                     <td class="px-4 py-2" width="10">:</td>
                     <td class="px-4 py-2">{{ $student->full_grade }}</td>
+                </tr>
+                <tr>
+                    <td class="px-4 py-2 font-bold">Wali Murid</td>
+                    <td class="px-4 py-2" width="10">:</td>
+                    <td class="px-4 py-2">
+                        <ul>
+                            @foreach ($student->parents as $parent)
+                                <li>{{ $parent->name }} ({{ $parent->relation }})</li>
+                            @endforeach
+                        </ul>
+                    </td>
                 </tr>
             </tbody>
         </table>

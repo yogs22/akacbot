@@ -56,6 +56,9 @@
                     @endforelse
                 </tbody>
             </table>
+            <div class="mt-5">
+                {{ $score_categories->links() }}
+            </div>
         </div>
     </div>
 </div>

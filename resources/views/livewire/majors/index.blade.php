@@ -58,6 +58,9 @@
                     @endforelse
                 </tbody>
             </table>
+            <div class="mt-5">
+                {{ $majors->links() }}
+            </div>
         </div>
     </div>
 </div>

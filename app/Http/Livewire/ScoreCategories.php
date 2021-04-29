@@ -7,13 +7,14 @@ use App\Models\ScoreCategory;
 
 class ScoreCategories extends Component
 {
-    public $score_categories, $name, $score_category_id;
+    public $name, $score_category_id;
     public $isModal = 0;
 
     public function render()
     {
-        $this->score_categories = ScoreCategory::orderBy('created_at', 'DESC')->get();
-        return view('livewire.score_categories.index');
+        return view('livewire.score_categories.index', [
+            'score_categories' => ScoreCategory::latest()->paginate()
+        ]);
     }
 
     public function create()

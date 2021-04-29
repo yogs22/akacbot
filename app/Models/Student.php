@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 class Student extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'nisn', 'name', 'gender', 'address', 'birthplace', 'birthdate', 'phone_number', 'religion', 'parent_id', 'major_id', 'class_id'
+        'nisn', 'name', 'gender', 'address', 'birthplace', 'birthdate', 'phone_number', 'religion', 'major_id', 'class_id'
     ];
 
     public function major()
@@ -16,14 +19,14 @@ class Student extends Model
         return $this->belongsTo(Major::class);
     }
 
-    public function parent()
-    {
-        return $this->belongsTo(StudentParent::class);
-    }
-
     public function grade()
     {
         return $this->belongsTo(Grade::class, 'class_id');
+    }
+
+    public function parents()
+    {
+        return $this->hasMany(StudentParent::class);
     }
 
     public function scores()

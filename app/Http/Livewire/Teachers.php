@@ -7,13 +7,14 @@ use App\Models\Teacher;
 
 class Teachers extends Component
 {
-    public $teachers, $name, $nuptk, $address, $phone_number, $gender, $teacher_id;
+    public $name, $nuptk, $address, $phone_number, $gender, $teacher_id;
     public $isModal = 0;
 
     public function render()
     {
-        $this->teachers = Teacher::orderBy('created_at', 'DESC')->get();
-        return view('livewire.teachers.index');
+        return view('livewire.teachers.index', [
+            'teachers' => Teacher::latest()->paginate(15)
+        ]);
     }
 
     public function create()

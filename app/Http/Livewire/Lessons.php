@@ -7,13 +7,14 @@ use App\Models\Lesson;
 
 class Lessons extends Component
 {
-    public $lessons, $name, $code, $lesson_id;
+    public $name, $code, $lesson_id;
     public $isModal = 0;
 
     public function render()
     {
-        $this->lessons = Lesson::orderBy('created_at', 'DESC')->get();
-        return view('livewire.lessons.index');
+        return view('livewire.lessons.index', [
+            'lessons' => Lesson::latest()->paginate()
+        ]);
     }
 
     public function create()

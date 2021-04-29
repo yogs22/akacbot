@@ -7,13 +7,14 @@ use App\Models\Grade;
 
 class Classes extends Component
 {
-    public $classes, $name, $sub, $class_id;
+    public $name, $sub, $class_id;
     public $isModal = 0;
 
     public function render()
     {
-        $this->classes = Grade::orderBy('created_at', 'DESC')->get();
-        return view('livewire.classes.index');
+        return view('livewire.classes.index', [
+            'classes' => Grade::orderBy('name', 'asc')->paginate(15)
+        ]);
     }
 
     public function create()

@@ -7,13 +7,14 @@ use App\Models\Major;
 
 class Majors extends Component
 {
-    public $majors, $name, $code, $major_id;
+    public $name, $code, $major_id;
     public $isModal = 0;
 
     public function render()
     {
-        $this->majors = Major::orderBy('created_at', 'DESC')->get();
-        return view('livewire.majors.index');
+        return view('livewire.majors.index', [
+            'majors' => Major::latest()->paginate()
+        ]);
     }
 
     public function create()

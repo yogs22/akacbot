@@ -28,14 +28,21 @@
                         <label for="formGender" class="block text-gray-700 text-sm font-bold mb-2">Agama:</label>
                         <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="formGender" wire:model="religion">
                             <option value=""></option>
-                            <option value="Islam">Islam</option>
-                            <option value="Kristen">Kristen</option>
-                            <option value="Katolik">Katolik</option>
-                            <option value="Hindu">Hindu</option>
-                            <option value="Buddha">Buddha</option>
-                            <option value="Kong Hu Cu">Kong Hu Cu</option>
+                            @foreach (config('array.religion') as $religion)
+                                <option value="{{ $religion }}">{{ $religion }}</option>
+                            @endforeach
                         </select>
                         @error('religion') <span class="text-red-500">{{ $message }}</span>@enderror
+                    </div>
+                    <div class="mb-4">
+                        <label for="formGender" class="block text-gray-700 text-sm font-bold mb-2">Siswa:</label>
+                        <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="formGender" wire:model="student_id">
+                            <option value=""></option>
+                            @foreach ($students as $student)
+                                <option value="{{ $student->id }}">{{ $student->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('student_id') <span class="text-red-500">{{ $message }}</span>@enderror
                     </div>
                     <div class="mb-4">
                         <label for="formGender" class="block text-gray-700 text-sm font-bold mb-2">Status:</label>

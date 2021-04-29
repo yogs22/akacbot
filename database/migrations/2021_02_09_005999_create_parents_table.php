@@ -19,8 +19,11 @@ class CreateParentsTable extends Migration
             $table->text('address');
             $table->string('phone_number');
             $table->string('religion');
-            $table->enum('relation', ['Ayah', 'Ibu', 'Lainnya']);
+            $table->enum('relation', ['Ayah', 'Ibu']);
+            $table->unsignedBigInteger('student_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade')->onDelete('set null');
         });
     }
 

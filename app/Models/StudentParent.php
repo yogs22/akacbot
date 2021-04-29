@@ -11,6 +11,11 @@ class StudentParent extends Model
 
     protected $table = 'parents';
     protected $fillable = [
-        'name', 'address', 'phone_number', 'religion', 'relation'
+        'name', 'address', 'phone_number', 'religion', 'relation', 'student_id'
     ];
+
+    public function student()
+    {
+        $this->belongsTo(Student::class);
+    }
 }

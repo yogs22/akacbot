@@ -4,16 +4,25 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\StudentParent;
+use App\Models\Student;
 
 class Parents extends Component
 {
-    public $parents, $name, $religion, $address, $phone_number, $relation, $parent_id;
+    public $name, $religion, $address, $phone_number, $relation, $parent_id, $student_id;
     public $isModal = 0;
+
+    public $students;
 
     public function render()
     {
-        $this->parents = StudentParent::orderBy('created_at', 'DESC')->get();
-        return view('livewire.parents.index');
+        return view('livewire.parents.index', [
+            'parents' => StudentParent::latest()->paginate(15)
+        ]);
+    }
+
+    public function getStudents()
+    {
+        $this->students = Student::all();
     }
 
     public function create()
@@ -31,6 +40,8 @@ class Parents extends Component
     public function openModal()
     {
         $this->isModal = true;
+
+        $this->getStudents();
     }
 
     public function resetFields()
@@ -40,6 +51,7 @@ class Parents extends Component
         $this->phone_number = '';
         $this->relation = '';
         $this->parent_id = '';
+        $this->student_id = '';
     }
 
     public function store()
@@ -50,14 +62,16 @@ class Parents extends Component
             'address' => 'required|string',
             'phone_number' => 'required|string',
             'relation' => 'required|string',
+            'student_id' => 'required|integer',
         ]);
 
-        StudentParent::updateOrCreate(['id' => $this->parent_id], [
+        $parent = StudentParent::updateOrCreate(['id' => $this->parent_id], [
             'name' => $this->name,
             'religion' => $this->religion,
             'address' => $this->address,
             'phone_number' => $this->phone_number,
             'relation' => $this->relation,
+            'student_id' => $this->student_id
         ]);
 
         session()->flash('message', $this->parent_id ? $this->name . ' Diperbaharui': $this->name . ' Ditambahkan');
@@ -75,6 +89,7 @@ class Parents extends Component
         $this->address = $parent->address;
         $this->phone_number = $parent->phone_number;
         $this->relation = $parent->relation;
+        $this->student_id = $parent->student_id;
 
         $this->openModal();
     }

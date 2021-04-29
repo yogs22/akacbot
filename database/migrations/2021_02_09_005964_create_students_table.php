@@ -23,12 +23,10 @@ class CreateStudentsTable extends Migration
             $table->date('birthdate');
             $table->string('phone_number');
             $table->string('religion');
-            $table->unsignedBigInteger('parent_id');
             $table->unsignedBigInteger('major_id');
             $table->unsignedBigInteger('class_id');
             $table->timestamps();
 
-            $table->foreign('parent_id')->references('id')->on('parents')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('major_id')->references('id')->on('majors')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('class_id')->references('id')->on('classes')->onUpdate('cascade')->onDelete('cascade');
         });
