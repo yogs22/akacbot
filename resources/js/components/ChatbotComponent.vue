@@ -123,7 +123,7 @@ export default {
         },
 
         scrollBottom() {
-            window.setInterval(function() {
+            window.setTimeout(function() {
                 var elem = document.getElementById('chat');
                 elem.scrollTop = elem.scrollHeight;
             }, 100);
