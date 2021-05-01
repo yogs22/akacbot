@@ -12,4 +12,9 @@ class Teacher extends Model
     protected $fillable = [
         'nuptk', 'name', 'address', 'phone_number', 'gender'
     ];
+
+    public function lessons()
+    {
+        return $this->belongsToMany(Lesson::class);
+    }
 }

@@ -43,7 +43,7 @@
                                     <x-jet-dropdown-link href="{{ route('student') }}">
                                         {{ __('Siswa') }}
                                     </x-jet-dropdown-link>
-                                    <x-jet-dropdown-link href="{{ route('religion') }}">
+                                    <x-jet-dropdown-link href="{{ route('parent') }}">
                                         {{ __('Wali Murid') }}
                                     </x-jet-dropdown-link>
                                     <x-jet-dropdown-link href="{{ route('class') }}">
