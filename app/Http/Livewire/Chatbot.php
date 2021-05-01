@@ -9,6 +9,7 @@ use BotMan\BotMan\Messages\Incoming\Answer;
 use App\Models\Score;
 use App\Models\Student;
 use App\Models\StudentParent;
+use App\Models\LessonTeacher;
 use Illuminate\View\View;
 
 class Chatbot extends Component
@@ -34,7 +35,8 @@ class Chatbot extends Component
             $this->getStudent($botman);
             $this->getParent($botman);
             $this->getScore($botman);
-            $this->getLesson($botman);
+            $this->getLessonTeacher($botman);
+            $this->getLessonStudent($botman);
 
             $this->fallback($botman);
 
@@ -137,11 +139,45 @@ class Chatbot extends Component
     }
 
     /**
+     * Get lesson list of teacher
+     * @param  BotMan $botman
+     * @return BotMan $botman
+     */
+    public function getLessonTeacher($botman)
+    {
+        $botman->hears('Data guru {lesson} dengan kelas {class} {major} {sub}', function($bot, $lesson, $class, $major, $sub) {
+            // dd($lesson, $class, $major, $sub);
+            $teach = LessonTeacher::with('teacher', 'grade', 'major')
+            ->whereHas('lesson', function (Builder $query) use ($lesson) {
+                $query->where('name', $lesson);
+            })
+            ->whereHas('grade', function (Builder $query) use ($class, $sub) {
+                $query->where('name', $class)->where('sub', $sub);
+            })
+            ->whereHas('major', function (Builder $query) use ($major) {
+                $query->where('code', $major);
+            })
+            ->first();
+
+            if (is_null($teach)) {
+                $bot->reply('Data guru yang anda maksud tidak ditemukan');
+            } else {
+                $bot->reply("
+                    NUPTK: {$teach->teacher->nuptk} <br>
+                    Nama: {$teach->teacher->name} <br>
+                    Alamat: {$teach->teacher->address} <br>
+                    No HP: {$teach->teacher->phone_number} <br>
+                ");
+            }
+        });
+    }
+
+    /**
      * Get lesson list of student
      * @param  BotMan $botman
      * @return BotMan $botman
      */
-    public function getLesson($botman)
+    public function getLessonStudent($botman)
     {
         $botman->hears('Data pelajaran siswa dengan (nisn|nama) {object}', function($bot, $object) {
             $scores = Score::with('lesson', 'student')->whereHas('student', function (Builder $query) use ($object) {
