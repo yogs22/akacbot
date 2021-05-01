@@ -59,21 +59,22 @@ export default {
             messages: [],
             newMessage: null,
             userId: +(new Date()),
-            apiEndpoint: '/chatbot'
+            apiEndpoint: '/chatbot',
+            starterChat: null
         }
     },
     mounted() {
-        let text = `
+        this.starterChat = `
             <b>Selamat datang di Akcbot</b> <br>
             <b>Silahkan pilih pertanyaan di bawah ya:</b> <br>
             1. Data siswa dengan NISN / Nama ? <br>
             2. Data wali siswa dengan NISN / Nama ? <br>
             3. Nilai pelajaran ? dengan NISN ? <br>
-            4. Data guru mapel dengan kelas Nama ? <br>
+            4. Data guru mapel ? dengan kelas ? <br>
             5. Data pelajaran siswa dengan NISN / Nama ? <br>
         `;
 
-        this._addMessage(text);
+        this._addMessage(this.starterChat);
     },
     methods: {
         callAPI(text, interactive = false, attachment = null, callback) {
@@ -116,6 +117,7 @@ export default {
             this.newMessage = '';
             if (messageText === 'clear') {
                 this.messages = [];
+                this._addMessage(this.starterChat);
                 return;
             }
             this._addMessage(messageText, null, true);

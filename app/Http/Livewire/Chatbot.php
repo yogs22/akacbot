@@ -145,7 +145,7 @@ class Chatbot extends Component
      */
     public function getLessonTeacher($botman)
     {
-        $botman->hears('Data guru {lesson} dengan kelas {class} {major} {sub}', function($bot, $lesson, $class, $major, $sub) {
+        $botman->hears('Data guru mapel {lesson} dengan kelas {class} {major} {sub}', function($bot, $lesson, $class, $major, $sub) {
             // dd($lesson, $class, $major, $sub);
             $teach = LessonTeacher::with('teacher', 'grade', 'major')
             ->whereHas('lesson', function (Builder $query) use ($lesson) {
@@ -207,7 +207,15 @@ class Chatbot extends Component
     public function fallback($botman)
     {
         $botman->fallback(function($bot) {
-            $bot->reply('Mohon maaf, pertanyaan tidak tersedia');
+            $bot->reply('
+                <b>Mohon maaf, pertanyaan tidak tersedia</b> <br>
+                <b>Silahkan pilih pertanyaan di bawah ya:</b> <br>
+                1. Data siswa dengan NISN / Nama ? <br>
+                2. Data wali siswa dengan NISN / Nama ? <br>
+                3. Nilai pelajaran ? dengan NISN ? <br>
+                4. Data guru mapel ? dengan kelas ? <br>
+                5. Data pelajaran siswa dengan NISN / Nama ? <br>
+            ');
         });
     }
 }
