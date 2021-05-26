@@ -16,7 +16,7 @@
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
 
-                    @if (request()->routeIs('dashboard') || request()->routeIs('chatbot'))
+                    @if (request()->routeIs('dashboard') || request()->routeIs('chatbot') || request()->routeIs('documentation'))
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                     @else
                         <div class="hidden sm:flex sm:items-center sm:ml-6 inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out">
@@ -65,6 +65,10 @@
 
                     <x-jet-nav-link href="{{ route('chatbot') }}" :active="request()->routeIs('chatbot')">
                         {{ __('Chatbot') }}
+                    </x-jet-nav-link>
+
+                    <x-jet-nav-link href="{{ route('documentation') }}" :active="request()->routeIs('documentation')">
+                        {{ __('Dokumentasi') }}
                     </x-jet-nav-link>
                 </div>
             </div>
@@ -163,6 +167,14 @@
                 <!-- Account Management -->
                 <x-jet-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                     {{ __('Profile') }}
+                </x-jet-responsive-nav-link>
+
+                <x-jet-responsive-nav-link href="{{ route('chatbot') }}" :active="request()->routeIs('chatbot')">
+                    {{ __('Chatbot') }}
+                </x-jet-responsive-nav-link>
+
+                <x-jet-responsive-nav-link href="{{ route('documentation') }}" :active="request()->routeIs('documentation')">
+                    {{ __('Dokumentasi') }}
                 </x-jet-responsive-nav-link>
 
                 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())

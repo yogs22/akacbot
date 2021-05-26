@@ -11,6 +11,7 @@ use App\Http\Livewire\Students;
 use App\Http\Livewire\StudentDetail;
 use App\Http\Livewire\TeacherDetail;
 use App\Http\Livewire\Chatbot;
+use App\Http\Livewire\Documentation;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,5 +45,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
     // Chatbot
     Route::get('chatbot', Chatbot::class)->name('chatbot');
+
+    // Documentation
+    Route::get('documentation', Documentation::class)->name('documentation');
 });
 Route::post('chatbot', [Chatbot::class, 'store'])->name('chatbot.store');
