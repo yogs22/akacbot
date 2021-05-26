@@ -63,13 +63,13 @@ export default {
     },
     mounted() {
         this.starterChat = `
-            <b>Selamat datang di Akcbot</b> <br>
+            <b>Selamat datang di Akademik Chatbot</b> <br>
             <b>Silahkan pilih pertanyaan di bawah ya:</b> <br>
-            1. Data siswa dengan NISN / Nama ? <br>
-            2. Data wali siswa dengan NISN / Nama ? <br>
-            3. Nilai pelajaran ? dengan NISN ? <br>
-            4. Data guru mapel ? dengan kelas ? <br>
-            5. Data pelajaran siswa dengan NISN / Nama ? <br>
+            1. Data siswa dengan NISN / Nama ___ <br>
+            2. Data wali siswa dengan NISN / Nama ___ <br>
+            3. Nilai pelajaran ___ dengan NISN ___ <br>
+            4. Data guru mapel ___ dengan kelas ___ <br>
+            5. Data pelajaran siswa dengan NISN / Nama ___ <br>
         `;
 
         this._addMessage(this.starterChat);
