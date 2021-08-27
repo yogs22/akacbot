@@ -67,9 +67,8 @@ export default {
             <b>Silahkan pilih pertanyaan di bawah ya:</b> <br>
             1. Data siswa dengan NISN / Nama ___ <br>
             2. Data wali siswa dengan NISN / Nama ___ <br>
-            3. Nilai pelajaran ___ dengan NISN ___ <br>
-            4. Data guru mapel ___ dengan kelas ___ <br>
-            5. Data pelajaran siswa dengan NISN / Nama ___ <br>
+            3. Data guru dengan NUPTK / Nama ___ <br>
+            4. Data nilai siswa dengan NISN ___ <br>
         `;
 
         this._addMessage(this.starterChat);

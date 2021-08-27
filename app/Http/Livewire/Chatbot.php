@@ -8,6 +8,7 @@ use Livewire\Component;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use App\Models\Score;
 use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\StudentParent;
 use App\Models\LessonTeacher;
 use Illuminate\View\View;
@@ -34,6 +35,7 @@ class Chatbot extends Component
 
             $this->getStudent($botman);
             $this->getParent($botman);
+            $this->getTeachers($botman);
             $this->getScore($botman);
             $this->getLessonTeacher($botman);
             $this->getLessonStudent($botman);
@@ -53,24 +55,26 @@ class Chatbot extends Component
     public function getStudent($botman)
     {
         $botman->hears('Data siswa dengan (nisn|nama) {object}', function($bot, $object) {
-            $student = Student::with('major')->where('name', 'like', "%{$object}%")
+            $students = Student::with('major')->where('name', 'like', "%{$object}%")
                 ->orWhere('nisn', $object)
-                ->first();
+                ->get();
 
-            if (empty($student)) {
+            if (empty($students)) {
                 $bot->reply('Data siswa yang anda maksud tidak ditemukan');
             } else {
-                $bot->reply("
-                    Nama: {$student->name} <br>
-                    NISN: {$student->nisn} <br>
-                    Jenis Kelamin: {$student->gender} <br>
-                    Jurusan: {$student->major->name} <br>
-                    Kelas: {$student->full_grade} <br>
-                    Tempat Lahir: {$student->birthplace} <br>
-                    Tanggal Lahir: {$student->date_formated} <br>
-                    No HP: {$student->phone_number} <br>
-                    Agama: {$student->religion}
-                ");
+                foreach ($students as $student) {
+                    $bot->reply("
+                        Nama: {$student->name} <br>
+                        NISN: {$student->nisn} <br>
+                        Jenis Kelamin: {$student->gender} <br>
+                        Jurusan: {$student->major->name} <br>
+                        Kelas: {$student->full_grade} <br>
+                        Tempat Lahir: {$student->birthplace} <br>
+                        Tanggal Lahir: {$student->date_formated} <br>
+                        No HP: {$student->phone_number} <br>
+                        Agama: {$student->religion}
+                    ");
+                }
             }
         });
     }
@@ -106,17 +110,40 @@ class Chatbot extends Component
     }
 
     /**
+     * Get teacher data with NIM / name
+     * @return BotMan $botman
+     */
+    public function getTeachers($botman)
+    {
+        $botman->hears('Data guru dengan (nuptk|nama) {object}', function($bot, $object) {
+            $teachers = Teacher::where('name', 'like', "%{$object}%")
+                ->orWhere('nuptk', $object)
+                ->get();
+
+            if (empty($teachers)) {
+                $bot->reply('Data guru yang anda maksud tidak ditemukan');
+            } else {
+                foreach ($teachers as $teacher) {
+                    $bot->reply("
+                        Nama: {$teacher->name} <br>
+                        NUPTK: {$teacher->nuptk} <br>
+                        Jenis Kelamin: {$teacher->gender} <br>
+                        No HP: {$teacher->phone_number} <br>
+                    ");
+                }
+            }
+        });
+    }
+
+    /**
      * Get student score with nim/nisn
      * @param  BotMan $botman
      * @return BotMan $botman
      */
     public function getScore($botman)
     {
-        $botman->hears('Nilai pelajaran {adjective} dengan nisn {nisn}', function($bot, $adjective, $nisn) {
-            $scores = Score::select('semester', 'value', 'score_category_id')->with('scoreCategory:id,name')
-            ->whereHas('lesson', function (Builder $query) use ($adjective) {
-                $query->where('name', $adjective);
-            })
+        $botman->hears('Data nilai siswa dengan nisn {nisn}', function($bot, $adjective, $nisn) {
+            $scores = Score::select('semester', 'value', 'lesson_id', 'score_category_id')->with('scoreCategory:id,name', 'lesson')
             ->whereHas('student', function (Builder $query) use ($nisn) {
                 $query->where('nisn', $nisn);
             })
@@ -130,7 +157,7 @@ class Chatbot extends Component
                     $semester = "Nilai semester {$score[0]['semester']} : <br>";
                     $value = null;
                     foreach ($score as $sc) {
-                        $value .= $sc['score_category']['name'] .' : '. $sc['value'] . '<br>';
+                        $value .= $sc['lesson']['code'] .' - '. $sc['score_category']['name'] .' : '. $sc['value'] . '<br>';
                     }
                     $bot->reply($semester.$value);
                 }
@@ -208,13 +235,12 @@ class Chatbot extends Component
     {
         $botman->fallback(function($bot) {
             $bot->reply('
-                <b>Mohon maaf, pertanyaan tidak tersedia</b> <br>
+                <b>Selamat datang di Akademik Chatbot</b> <br>
                 <b>Silahkan pilih pertanyaan di bawah ya:</b> <br>
-                1. Data siswa dengan NISN / Nama ? <br>
-                2. Data wali siswa dengan NISN / Nama ? <br>
-                3. Nilai pelajaran ? dengan NISN ? <br>
-                4. Data guru mapel ? dengan kelas ? <br>
-                5. Data pelajaran siswa dengan NISN / Nama ? <br>
+                1. Data siswa dengan NISN / Nama ___ <br>
+                2. Data wali siswa dengan NISN / Nama ___ <br>
+                3. Data guru dengan NUPTK / Nama ___ <br>
+                4. Data nilai siswa dengan NISN ___ <br>
             ');
         });
     }
